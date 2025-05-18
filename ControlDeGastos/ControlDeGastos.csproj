@@ -127,6 +127,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\GastosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -140,8 +141,17 @@
     <Compile Include="Migrations\202505181731569_RenameGastoesToGastos.Designer.cs">
       <DependentUpon>202505181731569_RenameGastoesToGastos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202505182022256_agrego detalle.cs" />
+    <Compile Include="Migrations\202505182022256_agrego detalle.Designer.cs">
+      <DependentUpon>202505182022256_agrego detalle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505182043169_AgregarRelacionCategoria.cs" />
+    <Compile Include="Migrations\202505182043169_AgregarRelacionCategoria.Designer.cs">
+      <DependentUpon>202505182043169_AgregarRelacionCategoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
+    <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Gasto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -197,6 +207,14 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Gastos\Index.cshtml" />
+    <Content Include="Views\Gastos\Create.cshtml" />
+    <Content Include="Views\Categorias\Create.cshtml" />
+    <Content Include="Views\Categorias\Delete.cshtml" />
+    <Content Include="Views\Categorias\Details.cshtml" />
+    <Content Include="Views\Categorias\Edit.cshtml" />
+    <Content Include="Views\Categorias\Index.cshtml" />
+    <Content Include="Views\Gastos\Edit.cshtml" />
+    <Content Include="Views\Gastos\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -234,6 +252,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202505181731569_RenameGastoesToGastos.resx">
       <DependentUpon>202505181731569_RenameGastoesToGastos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505182022256_agrego detalle.resx">
+      <DependentUpon>202505182022256_agrego detalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505182043169_AgregarRelacionCategoria.resx">
+      <DependentUpon>202505182043169_AgregarRelacionCategoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

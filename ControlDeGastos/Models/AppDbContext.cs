@@ -13,6 +13,7 @@ namespace ControlDeGastos.Models
         }
 
         public DbSet<Gasto> Gastos { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
     }
 }

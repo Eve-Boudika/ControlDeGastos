@@ -16,11 +16,16 @@ namespace ControlDeGastos.Models
         [Required]
         public int Monto { get; set; }
 
-        [Required]
-        public string Categoria { get; set; }
+        public string Detalle { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
+
+
+        // Relación con Categoría
+        [Required]
+        public int CategoriaId { get; set; }
+        public virtual Categoria Categoria { get; set; }
     }
 }
