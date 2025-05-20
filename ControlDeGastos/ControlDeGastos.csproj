@@ -130,6 +130,7 @@
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\GastosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PresupuestosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -149,11 +150,25 @@
     <Compile Include="Migrations\202505182043169_AgregarRelacionCategoria.Designer.cs">
       <DependentUpon>202505182043169_AgregarRelacionCategoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202505191910254_AddPresupuesto.cs" />
+    <Compile Include="Migrations\202505191910254_AddPresupuesto.Designer.cs">
+      <DependentUpon>202505191910254_AddPresupuesto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505201552585_actualizaciondedatetime.cs" />
+    <Compile Include="Migrations\202505201552585_actualizaciondedatetime.Designer.cs">
+      <DependentUpon>202505201552585_actualizaciondedatetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505201838265_RenamePresupuestosTable.cs" />
+    <Compile Include="Migrations\202505201838265_RenamePresupuestosTable.Designer.cs">
+      <DependentUpon>202505201838265_RenamePresupuestosTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Gasto.cs" />
+    <Compile Include="Models\Presupuesto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\GastosResumenViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -215,6 +230,8 @@
     <Content Include="Views\Categorias\Index.cshtml" />
     <Content Include="Views\Gastos\Edit.cshtml" />
     <Content Include="Views\Gastos\Delete.cshtml" />
+    <Content Include="Views\Presupuestos\Index.cshtml" />
+    <Content Include="Views\Presupuestos\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -258,6 +275,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202505182043169_AgregarRelacionCategoria.resx">
       <DependentUpon>202505182043169_AgregarRelacionCategoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505191910254_AddPresupuesto.resx">
+      <DependentUpon>202505191910254_AddPresupuesto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505201552585_actualizaciondedatetime.resx">
+      <DependentUpon>202505201552585_actualizaciondedatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505201838265_RenamePresupuestosTable.resx">
+      <DependentUpon>202505201838265_RenamePresupuestosTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

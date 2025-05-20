@@ -1,50 +1,78 @@
-﻿@model IEnumerable<ControlDeGastos.Models.Gasto>
+﻿@model ControlDeGastos.ViewModels.GastosResumenViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gastos";
+    // El array de meses tiene 13 elementos, siendo el primero vacío.
+    // Para que el índice del mes (1-12) coincida con el array,
+    // es mejor usarlo directamente con Model.Periodo.Month - 1 para CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
+    var meses = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
 }
 
-<h2>Index</h2>
+<h2>GASTOS</h2>
+
+<h4>Total del mes: <strong>$@Model.TotalGastado</strong></h4>
+
+@using (Html.BeginForm("Index", "Gastos", FormMethod.Get))
+{
+    <label>Mes:</label>
+    <select name="mes" class="form-control" style="width: 150px; display: inline-block;">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <option value="@i" @(i == Model.Periodo.Month ? "selected" : "")>@meses[i - 1]</option>
+        }
+    </select>
+
+    <label>Año:</label>
+    <input type="number" name="anio" value="@Model.Periodo.Year" class="form-control" style="width: 100px; display: inline-block;" />
+
+    <input type="submit" value="Filtrar" class="btn btn-primary" />
+}
+
+<div class="card mb-3 mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Resumen del mes @meses[Model.Periodo.Month - 1] @Model.Periodo.Year</h5>
+        <p class="card-text">
+            <strong>Presupuesto:</strong> $@Model.MontoPresupuesto <br />
+            <strong>Total Gastado:</strong> $@Model.TotalGastado <br />
+            <strong>Monto Disponible:</strong> $@Model.MontoDisponible
+        </p>
+    </div>
+</div>
+
+@if (Model.Gastos.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Monto</th>
+                <th>Categoría</th>
+                <th>Detalle</th>
+                <th>Fecha</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Gastos)
+            {
+                <tr>
+                    <td>$@item.Monto</td>
+                    <td>@item.Categoria.Nombre</td>
+                    <td>@item.Detalle</td>
+                    <td>@item.Fecha.ToShortDateString()</td>
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay gastos registrados para este mes.</p>
+}
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Agregar nuevo gasto", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Monto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Categoria)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detalle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fecha)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Monto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Categoria.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detalle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-}
-
-</table>

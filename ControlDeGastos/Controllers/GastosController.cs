@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ControlDeGastos.Models;
+using ControlDeGastos.ViewModels;
 
 namespace ControlDeGastos.Controllers
 {
@@ -13,10 +15,40 @@ namespace ControlDeGastos.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int? mes, int? anio)
         {
-            var lista = db.Gastos.Include(g => g.Categoria).ToList(); // Incluyo la categoría para evitar lazy loading
-            return View(lista);
+            var ahora = DateTime.Now;
+            int mesSeleccionado = mes ?? ahora.Month;
+            int anioSeleccionado = anio ?? ahora.Year;
+
+            DateTime periodoSeleccionado = new DateTime(anioSeleccionado, mesSeleccionado, 1);
+
+            var gastosDelMes = db.Gastos
+                .Include(g => g.Categoria)
+                //.Where(g => g.Fecha.Month == mesSeleccionado && g.Fecha.Year == anioSeleccionado)
+                .Where(g => g.Fecha.Year == periodoSeleccionado.Year && g.Fecha.Month == periodoSeleccionado.Month)
+                .OrderByDescending(g => g.Fecha)
+                .ToList();
+
+            int totalGastado = gastosDelMes.Sum(g => g.Monto);
+
+            //var presupuesto = await db.Presupuestos
+            //    .FirstOrDefaultAsync(p => p.Mes.Month == mesSeleccionado && p.Año == anioSeleccionado);
+
+            var presupuesto = await db.Presupuestos
+            .FirstOrDefaultAsync(p => p.Mes.Month == periodoSeleccionado.Month && p.Año.Year == periodoSeleccionado.Year);
+            int? montoPresupuesto = presupuesto?.Monto;
+
+            var viewModel = new GastosResumenViewModel
+            {
+                Gastos = gastosDelMes,
+                TotalGastado = totalGastado,
+                MontoPresupuesto = montoPresupuesto,
+                Periodo = periodoSeleccionado
+
+            };
+
+            return View(viewModel);
         }
 
         // GET: Gastos/Create
@@ -58,7 +90,7 @@ namespace ControlDeGastos.Controllers
         // POST: Gastos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Monto,Detalle,Fecha,CategoriaId")] Gasto gasto)
+        public ActionResult Edit([Bind(Include = "Id,Monto,Detalle,Fecha,CategoriaID")] Gasto gasto)
         {
             if (ModelState.IsValid)
             {
@@ -100,6 +132,21 @@ namespace ControlDeGastos.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult GastosDelMes()
+        {
+            var hoy = DateTime.Today;
+            var gastosDelMes = db.Gastos
+                .Include(g => g.Categoria)
+                .Where(g => g.Fecha.Month == hoy.Month && g.Fecha.Year == hoy.Year)
+                .ToList();
+
+            var total = gastosDelMes.Sum(g => g.Monto);
+
+            ViewBag.TotalGastado = total;
+
+            return View(gastosDelMes);
         }
     }
 }

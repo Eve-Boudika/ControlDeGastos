@@ -1,0 +1,63 @@
+﻿@model ControlDeGastos.Models.Presupuesto
+
+@{
+    ViewBag.Title = "Create";
+    var meses = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Presupuesto</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Año:</label>
+            <div class="col-md-10">
+                <select name="Año" class="form-control" style="width: 150px;">
+                    @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year + 5; i++) // Rango de años
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.Año, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mes:</label>
+            <div class="col-md-10">
+                <select name="Mes" class="form-control" style="width: 150px;">
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        <option value="@i">@meses[i - 1]</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
