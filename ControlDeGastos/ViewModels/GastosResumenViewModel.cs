@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using ControlDeGastos.Models;
 
 namespace ControlDeGastos.ViewModels
@@ -12,6 +10,9 @@ namespace ControlDeGastos.ViewModels
         public int TotalGastado { get; set; }
         public int? MontoPresupuesto { get; set; }
         public DateTime Periodo { get; set; }
+        public string CategoriaSeleccionada { get; set; }
+        public int? CategoriaSeleccionadaId { get; set; }
+        public IEnumerable<Categoria> Categorias { get; set; }
         public int MontoDisponible
         {
             get

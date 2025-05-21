@@ -1,0 +1,48 @@
+﻿@model ControlDeGastos.Models.Presupuesto
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Seguro que querés borrar este presupuesto?</h3>
+<div>
+    <h4>Presupuesto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Año.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Año.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mes.Month)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mes.Month)
+        </dd>
+
+        <dt>
+            $@Html.DisplayNameFor(model =>  model.Monto)
+        </dt>
+
+        <dd>
+            $@Html.DisplayFor(model => + model.Monto)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

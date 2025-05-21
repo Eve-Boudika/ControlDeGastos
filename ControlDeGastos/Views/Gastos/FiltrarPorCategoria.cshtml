@@ -1,0 +1,58 @@
+﻿@model ControlDeGastos.ViewModels.GastosResumenViewModel
+@{
+    ViewBag.Title = "Filtrar gastos por categoría";
+}
+
+<h2>Filtrar gastos por categoría</h2>
+
+<form asp-action="FiltrarPorCategoria" method="get">
+    <label for="categoriaId">Categoría:</label>
+    <select id="categoriaId" name="categoriaId" class="form-select" onchange="this.form.submit()">
+        <option value="">-- Todas --</option>
+        @foreach (var cat in Model.Categorias)
+        {
+            <option value="@cat.Id" @(cat.Id == Model.CategoriaSeleccionadaId ? "selected" : "")>
+                @cat.Nombre
+            </option>
+        }
+    </select>
+</form>
+
+@if (Model.Gastos.Any())
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Detalle</th>
+                <th>Monto</th>
+                @*<th>Categoría</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var g in Model.Gastos)
+            {
+                <tr>
+                    <td>@g.Fecha.ToShortDateString()</td>
+                    <td>@g.Detalle</td>
+                    <td>$@g.Monto</td>
+                    @*<td>@g.Categoria.Nombre</td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p><strong>Total gastado:</strong> $@Model.TotalGastado</p>
+}
+else
+{
+    if (Model.CategoriaSeleccionadaId.HasValue)
+    {
+        var categoria = Model.Categorias.FirstOrDefault(c => c.Id == Model.CategoriaSeleccionadaId.Value);
+        <p class="alert alert-warning">No hay gastos registrados para esa categoría </p>
+    }
+    else
+    {
+        <p class="alert alert-info">No hay gastos registrados.</p>
+    }
+}

@@ -2,9 +2,6 @@
 
 @{
     ViewBag.Title = "Gastos";
-    // El array de meses tiene 13 elementos, siendo el primero vacío.
-    // Para que el índice del mes (1-12) coincida con el array,
-    // es mejor usarlo directamente con Model.Periodo.Month - 1 para CultureInfo.CurrentCulture.DateTimeFormat.MonthNames
     var meses = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
 }
 
@@ -75,4 +72,9 @@ else
 
 <p>
     @Html.ActionLink("Agregar nuevo gasto", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Filtros por categoría", "FiltrarPorCategoria", null, new { @class = "btn btn-primary" })
 </p>
+
+
+
+

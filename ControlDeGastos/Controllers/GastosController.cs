@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using ControlDeGastos.Models;
 using ControlDeGastos.ViewModels;
@@ -25,15 +23,11 @@ namespace ControlDeGastos.Controllers
 
             var gastosDelMes = db.Gastos
                 .Include(g => g.Categoria)
-                //.Where(g => g.Fecha.Month == mesSeleccionado && g.Fecha.Year == anioSeleccionado)
                 .Where(g => g.Fecha.Year == periodoSeleccionado.Year && g.Fecha.Month == periodoSeleccionado.Month)
                 .OrderByDescending(g => g.Fecha)
                 .ToList();
 
             int totalGastado = gastosDelMes.Sum(g => g.Monto);
-
-            //var presupuesto = await db.Presupuestos
-            //    .FirstOrDefaultAsync(p => p.Mes.Month == mesSeleccionado && p.Año == anioSeleccionado);
 
             var presupuesto = await db.Presupuestos
             .FirstOrDefaultAsync(p => p.Mes.Month == periodoSeleccionado.Month && p.Año.Year == periodoSeleccionado.Year);
@@ -69,8 +63,7 @@ namespace ControlDeGastos.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            // Esto es clave para que el dropdown se recargue si hay error
+            
             ViewBag.CategoriaId = new SelectList(db.Categorias, "Id", "Nombre", gasto.CategoriaId);
             return View(gasto);
         }
@@ -148,5 +141,32 @@ namespace ControlDeGastos.Controllers
 
             return View(gastosDelMes);
         }
+
+        public ActionResult FiltrarPorCategoria(int? categoriaId)
+        {
+            var gastosQuery = db.Gastos.Include(g => g.Categoria).AsQueryable();
+
+            if (categoriaId.HasValue)
+            {
+                gastosQuery = gastosQuery.Where(g => g.CategoriaId == categoriaId.Value);
+            }
+
+            var gastosList = gastosQuery.ToList(); 
+            var categorias = db.Categorias.ToList(); 
+
+            var viewModel = new GastosResumenViewModel
+            {
+                Gastos = gastosList,
+                TotalGastado = gastosList.Any() ? gastosList.Sum(g => g.Monto) : 0,
+                CategoriaSeleccionadaId = categoriaId,
+                CategoriaSeleccionada = categoriaId.HasValue
+                    ? categorias.FirstOrDefault(c => c.Id == categoriaId.Value)?.Nombre
+                    : null,
+                Categorias = categorias
+            };
+
+            return View("FiltrarPorCategoria", viewModel);
+        }
+
     }
 }

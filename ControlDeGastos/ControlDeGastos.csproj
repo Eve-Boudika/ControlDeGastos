@@ -225,13 +225,15 @@
     <Content Include="Views\Gastos\Create.cshtml" />
     <Content Include="Views\Categorias\Create.cshtml" />
     <Content Include="Views\Categorias\Delete.cshtml" />
-    <Content Include="Views\Categorias\Details.cshtml" />
     <Content Include="Views\Categorias\Edit.cshtml" />
     <Content Include="Views\Categorias\Index.cshtml" />
     <Content Include="Views\Gastos\Edit.cshtml" />
     <Content Include="Views\Gastos\Delete.cshtml" />
     <Content Include="Views\Presupuestos\Index.cshtml" />
     <Content Include="Views\Presupuestos\Create.cshtml" />
+    <Content Include="Views\Presupuestos\Edit.cshtml" />
+    <Content Include="Views\Presupuestos\Delete.cshtml" />
+    <Content Include="Views\Gastos\FiltrarPorCategoria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
