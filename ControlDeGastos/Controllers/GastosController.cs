@@ -142,17 +142,24 @@ namespace ControlDeGastos.Controllers
             return View(gastosDelMes);
         }
 
-        public ActionResult FiltrarPorCategoria(int? categoriaId)
+        public ActionResult FiltrarPorCategoria(int? categoriaId, int? mes, int? anio)
         {
             var gastosQuery = db.Gastos.Include(g => g.Categoria).AsQueryable();
 
+            // Filtro por categoría
             if (categoriaId.HasValue)
             {
                 gastosQuery = gastosQuery.Where(g => g.CategoriaId == categoriaId.Value);
             }
 
-            var gastosList = gastosQuery.ToList(); 
-            var categorias = db.Categorias.ToList(); 
+            // Filtro por mes y año
+            if (mes.HasValue && anio.HasValue)
+            {
+                gastosQuery = gastosQuery.Where(g => g.Fecha.Month == mes.Value && g.Fecha.Year == anio.Value);
+            }
+
+            var gastosList = gastosQuery.ToList();
+            var categorias = db.Categorias.ToList();
 
             var viewModel = new GastosResumenViewModel
             {
@@ -162,7 +169,8 @@ namespace ControlDeGastos.Controllers
                 CategoriaSeleccionada = categoriaId.HasValue
                     ? categorias.FirstOrDefault(c => c.Id == categoriaId.Value)?.Nombre
                     : null,
-                Categorias = categorias
+                Categorias = categorias,
+                Periodo = new DateTime(anio ?? DateTime.Now.Year, mes ?? DateTime.Now.Month, 1)
             };
 
             return View("FiltrarPorCategoria", viewModel);

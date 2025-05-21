@@ -1,22 +1,39 @@
 ﻿@model ControlDeGastos.ViewModels.GastosResumenViewModel
 @{
     ViewBag.Title = "Filtrar gastos por categoría";
+    var meses = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
 }
 
 <h2>Filtrar gastos por categoría</h2>
 
-<form asp-action="FiltrarPorCategoria" method="get">
-    <label for="categoriaId">Categoría:</label>
-    <select id="categoriaId" name="categoriaId" class="form-select" onchange="this.form.submit()">
-        <option value="">-- Todas --</option>
-        @foreach (var cat in Model.Categorias)
+
+
+@using (Html.BeginForm("FiltrarPorCategoria", "Gastos", FormMethod.Get))
+{
+    <label>Categoría:</label>
+    <select name="categoriaId" class="form-control" style="width: 150px; display: inline-block;">
+        <option value="">Todas</option>
+        @foreach (var categoria in Model.Categorias)
         {
-            <option value="@cat.Id" @(cat.Id == Model.CategoriaSeleccionadaId ? "selected" : "")>
-                @cat.Nombre
+            <option value="@categoria.Id" @(categoria.Id == Model.CategoriaSeleccionadaId ? "selected" : "")>
+                @categoria.Nombre
             </option>
         }
     </select>
-</form>
+
+    <label>Mes:</label>
+    <select name="mes" class="form-control" style="width: 150px; display: inline-block;">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <option value="@i" @(i == Model.Periodo.Month ? "selected" : "")>@meses[i - 1]</option>
+        }
+    </select>
+
+    <label>Año:</label>
+    <input type="number" name="anio" value="@Model.Periodo.Year" class="form-control" style="width: 100px; display: inline-block;" />
+
+    <input type="submit" value="Filtrar" class="btn btn-primary" />
+}
 
 @if (Model.Gastos.Any())
 {
@@ -56,3 +73,7 @@ else
         <p class="alert alert-info">No hay gastos registrados.</p>
     }
 }
+
+<p>
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+</p>
